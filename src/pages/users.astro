@@ -1,0 +1,21 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro'
+import Button from '../components/Button.astro'
+import EmpyState from '../components/EmpyState.astro';
+---
+
+<DefaultLayout title="Users">
+  <section>
+    <h1>Users</h1><br>
+    <p class="size-20">Lorem ipsum dolor sit amet.</p>
+  </section>
+  <section class="margin-32">
+    <div class="space-content">
+      <h2>Users overview</h2>
+      <EmpyState>
+        You haven't added any users yet. Start by adding some.
+      </EmpyState>
+      <Button>Add your first user</Button>
+    </div>
+  </section>
+</DefaultLayout>
