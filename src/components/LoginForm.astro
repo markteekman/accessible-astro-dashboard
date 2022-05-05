@@ -1,0 +1,81 @@
+---
+import Button from './Button.astro'
+import { Notification } from 'accessible-astro-components'
+import { Icon } from 'astro-icon'
+---
+
+<form class="login-form space-content" method="post">
+  <Notification type="warning">
+    <Icon pack="majesticons" name="emoji-sad-line" /><p class="size-12">Incorrect email and password combination. Please try again.</p>
+  </Notification>
+  <div class="login-form__controls">
+    <label for="email">Email</label>
+    <input type="text" name="email" required>
+  </div>
+  <div class="login-form__controls">
+    <label for="password">Password</label>
+    <input type="password" name="password" required>
+  </div>
+  <Button type="submit">Login</Button>
+  <label class="checkbox">
+    <input type="checkbox" name="remember">
+    <span>Remember me</span>
+  </label>
+  <a href="#">Forgot password?</a>
+</form> 
+
+<script>
+  // variables
+  const form = document.querySelector('.login-form')
+  const notification = form.querySelector('.notification')
+  const emailInput = form.querySelector('input[name="email"]')
+  const passwordInput = form.querySelector('input[name="password"]')
+  const submitButton = form.querySelector('button')
+
+  // execution
+  notification.style.display = 'none'
+
+  submitButton.addEventListener('click', event => {
+    event.preventDefault()
+
+    if (emailInput.value === 'admin@astro.demo' && passwordInput.value === 'Astronaut570') {
+      localStorage.setItem('isLoggedIn', 'true')
+      window.location.href = '/'
+    } else {
+      notification.style.display = 'flex'
+    }
+  })
+</script>
+
+<style lang="scss" is:global>
+  @use '../assets/scss/base/border' as *;
+  @use '../assets/scss/base/space' as *;
+
+  .login-form {
+    label {
+      display: block;
+      margin-bottom: $space-8;
+    }
+
+    button,
+    input {
+      width: 100%;
+      @include radius-small;
+    }
+
+    input {
+      padding: $space-8;
+      border: 2px solid var(--neutral-600);
+    }
+
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: $space-4;
+
+      input {
+        width: auto;
+      }
+    }
+  }
+</style>
