@@ -4,16 +4,26 @@
 
 <script>
   // variables
-  const responsiveToggle = document.querySelector('.responsive-toggle')
+  const mainNav = document.querySelector('#main-navigation')
+  const mobileNavigation = mainNav.querySelector('.mobile-menu')
+  const responsiveToggle = mainNav.querySelector('.responsive-toggle')
+  const menuIconLabels = [...mainNav.querySelectorAll('.sr-only')]
+  const mediaQuery = window.matchMedia('(min-width: 48em)')
 
   // functions
   const openMenu = (toggle) => {
+    menuIconLabels.forEach(menuIconLabel => {
+      menuIconLabel.classList.remove('sr-only')
+    })
     toggle.setAttribute('aria-expanded', true)
     toggle.setAttribute('aria-label', 'Close menu navigation')
     toggle.innerHTML = `<svg viewBox="0 0 512 512" fill="var(--action-color)"><path d="m289.94 256 95-95A24 24 0 0 0 351 127l-95 95-95-95a24 24 0 0 0-34 34l95 95-95 95a24 24 0 1 0 34 34l95-95 95 95a24 24 0 0 0 34-34z"></path></svg>`
   }
 
   const closeMenu = (toggle) => {
+    menuIconLabels.forEach(menuIconLabel => {
+      menuIconLabel.classList.add('sr-only')
+    })
     toggle.setAttribute('aria-expanded', false)
     toggle.setAttribute('aria-label', 'Open menu navigation')
     toggle.innerHTML = `<svg viewBox="0 0 512 512" fill="var(--action-color)"><path d="M64 384h384v-42.666H64V384zm0-106.666h384v-42.667H64v42.667zM64 128v42.665h384V128H64z"></path></svg>`
@@ -21,12 +31,23 @@
 
   // execution
   responsiveToggle.addEventListener('click', _ => {
-    const mobileNavigation = document.querySelector('.mobile-menu')
-
     mobileNavigation.classList.toggle('show')
     mobileNavigation.classList.contains('show')
       ? openMenu(responsiveToggle)
       : closeMenu(responsiveToggle)
+  })
+
+  window.addEventListener('resize', () => {
+    const menuIconLabels = [...mainNav.querySelectorAll('span')]
+
+    if (mediaQuery.matches) {
+      mobileNavigation.classList.remove('show')
+      closeMenu(responsiveToggle)
+    } else {
+      menuIconLabels.forEach(menuIconLabel => {
+        menuIconLabel.classList.remove('sr-only')
+      })
+    }
   })
 </script>
 
