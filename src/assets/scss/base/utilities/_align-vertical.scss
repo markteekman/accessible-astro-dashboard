@@ -1,0 +1,10 @@
+// | -------------------------------------------------------------
+// | Align Vertical
+// | -------------------------------------------------------------
+
+.align-vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
