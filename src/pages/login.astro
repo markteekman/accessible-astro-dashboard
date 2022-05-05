@@ -1,0 +1,119 @@
+---
+import LoginLayout from '../layouts/LoginLayout.astro'
+import LoginForm from '../components/LoginForm.astro'
+import { Notification } from 'accessible-astro-components'
+import { Icon } from 'astro-icon'
+---
+
+<LoginLayout title="Login">
+  <section class="bg-neutral-100">
+    <div class="login">
+      <div class="login__inner reveal">
+        <div class="inner__brand">
+          <div class="bg-neutral-900 radius-large space-8">
+            <img
+              class="brand__logo radius-large"
+              src="/favicon.svg"
+              alt=""
+            >
+          </div>
+          <div class="brand__text">
+            <span>Astro Dashboard</span>
+            <span>An Accessible Astro Theme</span>
+          </div>
+        </div>
+        <div class="inner__form space-content">
+          <Notification>
+            <Icon pack="majesticons" name="information-circle-line" /><p class="size-12">Log in using <strong>admin@astro.demo</strong> and <strong>Astronaut570</strong> as the password.</p>          
+          </Notification>
+          <div class="space-content">
+            <h1>Login</h1>
+            <LoginForm />
+          </div>
+        </div>
+        <div class="text-neutral-700">
+          <p><em>Build fast dashboards, faster.</em></p>
+        </div>
+      </div>
+      <div class="login__background h-screen" />
+    </div>
+  </section>
+</LoginLayout>
+
+<style lang="scss">
+  @use '../assets/scss/base/breakpoint' as *;
+  @use '../assets/scss/base/size' as *;
+  @use '../assets/scss/base/space' as *;
+
+  .login {
+    display: grid;
+
+    @include breakpoint(medium) {
+      grid-template-columns: 550px 2fr;
+    }
+
+    .login__inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: $space-48;
+      z-index: 1;
+      padding: $space-48 $space-96;
+      box-shadow: 0 0 40px #2632381a;
+    }
+
+    .inner__brand {
+      display: flex;
+      align-items: center;
+      gap: $space-16;
+    }
+
+    .brand__logo {
+      max-width: 50px;
+    }
+
+    .brand__text {
+      display: flex;
+      flex-direction: column;
+      gap: $space-2;
+
+      > :first-child {
+        font-weight: bold;
+        @include size-20;
+      }
+
+      > :last-child {
+        @include size-14;
+      }
+    }
+
+    .login__background {
+      display: none;
+      background-color: #000;
+      background-image: url("/login-background.webp");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      @include breakpoint(medium) {
+        display: block;
+      }
+    }
+
+    .reveal {
+      animation: reveal 0.3s ease-in;
+    }
+  }
+
+  @keyframes reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(-1rem);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
