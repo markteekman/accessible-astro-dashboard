@@ -1,6 +1,6 @@
 # Accessible Astro Dashboard
 
-This Dashboard Theme is build upon the (awesome) [Astro Static Site Builder](https://astro.build/). This theme offers a couple of Accessibility components and some utility classes to get you building your project faster. Also check out the [Accessible Astro Components](https://github.com/markteekman/accessible-astro-components) npm package which can be used with (or without) this starter or the [Accessible Astro Starter](https://github.com/markteekman/accessible-astro-starter) theme, which comes with a blog and other accessibility features!
+This Dashboard theme is build upon the (awesome) [Astro Static Site Builder](https://astro.build/). This theme offers a couple of Accessibility components, a couple of example pages, some admin pages, a custom 404 page and some utility classes to get you building your project faster. Also check out the [Accessible Astro Components](https://github.com/markteekman/accessible-astro-components) npm package which can be used with (or without) this starter!
 
 [Live demo](https://dashboard.accessible-astro.dev)
 
@@ -12,23 +12,20 @@ npm install && npm start
 
 ## (Accessibility) features
 
-In this Dashboard Theme you'll find a couple of things:
-
-- Utilizes Astro's experimental SSR feature to redirect users to `/login` is there not logged in
-  - Uses `localStorage` to set a value of `isLoggedIn` to true when you log in using the login form
-  - Contains a `login.astro` page with an example login using a separate `LoginLayout.astro` layout
-  - `login.astro` contains example login data and a warning notification when the credentials are incorrect
+- Contains a `login.astro` page with an example login using the `localStorage` and a separate `LoginLayout.astro` layout
+- `login.astro` contains example login data and a warning notification for when the credentials are incorrect
 - Contains a dashboard example in the `index.astro` page using the `DefaultLayout.astro` layout
 - Several examples of admin pages such as `media.astro`, `messages.astro`, `products.astro`, `settings.astro` and `users.astro`
 - `Button.astro` component with simple, accessible styling and a property for `type="submit"`
 - `LoginForm.astro` component with a basic accessible login form and some form controls
 - `SkipLinks.astro` component to skip to either the main menu or the main content
-- `Navigation.astro` component with keyboard accessible (dropdown) navigation (arrow keys, escape key), which is expandable on desktop
+- `Navigation.astro` component with keyboard accessible navigation (arrow keys, escape key)
   - This component is a comprehensive sidebar navigation on desktop with the option to expand or collapse
   - The users menu width preference is stored in a `localStorage` value so that it is preserved during page reloads
   - The navigation automatically switches to an accessible mobile navigation for viewport widths below the medium breakpoint
-- `ResponsiveToggle.astro` component with an accessible responsive toggle button for the navigation
+- `ResponsiveToggle.astro` component with an accessible responsive toggle button for the mobile navigation
 - `DarkMode.astro` component toggle with accessible button which saves the users preference in the `localStorage`
+- `DashboardWidget.astro` component serves as an example for the dashboard on `index.astro`
 - `EmpyState.astro` component which can be displayed on pages that don't have any data yet
 - `404.astro` provides a custom 404 error page which you can adjust to your needs
 - `.sr-only` utility class for screen reader only text content
@@ -39,16 +36,22 @@ In this Dashboard Theme you'll find a couple of things:
 
 ## Login & Authentication
 
-This theme contains an example login flow, using a fake email address and password and by utilizing the `localStorage` and Astro's (experimental) SSR feature. All pages redirect to `/login.astro` if you haven't logged in using `Astro.redirect`. After logging in the value `isLoggedIn` is set to `true` and your authenticated to view the admin pages.
+This starter contains a basic example of authentication and redirecting based on a users logged in status. However, this is done using SSG, which is not ideal, but serves the purpose of this demo. For better authentication and redirecting you should use Astro's (experimental) SSR.
 
-⚠️ **Note: this is just an example, make sure you build your own secure authentication. Checkout this [official Astro Blog post](https://astro.build/blog/experimental-server-side-rendering/) for more information about authentication and login.**
+### Enabling SSR
+
+For the purpose of the demo I have not enabled SSR, simply due to the fact how I've setup the demo websites of all [accessible-astro.dev](https://accessible-astro.dev) subdomains. However, I might add it in the future. It is the preferred way to handle your login and redirect cases.
 
 ### LoginForm.astro
+
+This theme contains an example login flow, using a fake email address and password and by utilizing the `localStorage`. All pages redirect to `/login.astro` if you haven't logged in. After logging in the value `isLoggedIn` is set to `true` and your authenticated to view the admin pages. When building this using SSR you should use `cookies` instead of the `localStorage`.
+
+⚠️ **Note: this is just an example, make sure you build your own secure authentication. Checkout this [official Astro Blog post](https://astro.build/blog/experimental-server-side-rendering/) for more information about authentication and login.**
 
 ```js
 <script>
 // fetch your data from an API
-// and replace that an actual user object for example
+// and replace that with an actual user object for example
 
 submitButton.addEventListener('click', event => {
   event.preventDefault()
@@ -65,9 +68,11 @@ submitButton.addEventListener('click', event => {
 
 ```js
 ---
-let isLoggedIn = localStorage.getItem('isLoggedIn')
+import { getUser } from '../api/index.js'
 
-if (isLoggedIn !== 'true') {
+const user = await getUser(Astro.request)
+
+if (!user) {
   return Astro.redirect('/login')
 }
 ---
@@ -233,14 +238,20 @@ If you need an exception on your font-size for a specific reason you can use siz
 </div>
 ```
 
+## Other Accessible Astro projects
+
+- [Accessible Astro Starter](https://github.com/markteekman/accessible-astro-starter/)
+- [Accessible Astro Components](https://github.com/markteekman/accessible-astro-components/)
+- [Accessible Astro Documentation](https://accessible-astro.dev)
+
 ## Helping out
 
 If you find that something isn't working right then I'm always happy to hear it to improve this starter! You can contribute in many ways and forms. Let me know by either:
 
-1. [Filing an issue](https://github.com/markteekman/accessible-astro-starter/issues)
-2. [Submitting a pull request](https://github.com/markteekman/accessible-astro-starter/pulls)
-3. [Starting a discussion](https://github.com/markteekman/accessible-astro-starter/discussions)
-4. [Buying me a coffee!](https://www.buymeacoffee.com/markteekman) Help keep the demo's and docs up and running 😊
+1. [Filing an issue](https://github.com/markteekman/accessible-astro-dashboard/issues)
+2. [Submitting a pull request](https://github.com/markteekman/accessible-astro-dashboard/pulls)
+3. [Starting a discussion](https://github.com/markteekman/accessible-astro-dashboard/discussions)
+4. [Buying me a coffee!](https://www.buymeacoffee.com/markteekman)
 
 ## Thank you!
 
