@@ -1,8 +1,8 @@
-# Accessible Astro Starter
+# Accessible Astro Dashboard
 
-This starter project is build upon the (awesome) [Astro Static Site Builder](https://astro.build/). This starter offers a couple of Accessibility components and some utility classes to get you building your project faster. Also check out the [Accessible Astro Components](https://github.com/markteekman/accessible-astro-components) npm package which can be used with (or without) this starter!
+This Dashboard Theme is build upon the (awesome) [Astro Static Site Builder](https://astro.build/). This theme offers a couple of Accessibility components and some utility classes to get you building your project faster. Also check out the [Accessible Astro Components](https://github.com/markteekman/accessible-astro-components) npm package which can be used with (or without) this starter or the [Accessible Astro Starter](https://github.com/markteekman/accessible-astro-starter) theme, which comes with a blog and other accessibility features!
 
-[Live demo](https://starter.accessible-astro.dev)
+[Live demo](https://dashboard.accessible-astro.dev)
 
 ## Getting started
 Run the following commands in your project folder to get started:
@@ -10,29 +10,72 @@ Run the following commands in your project folder to get started:
 npm install && npm start
 ```
 
-## Accessibility features
+## (Accessibility) features
 
-In this starter you'll find a couple of things:
+In this Dashboard Theme you'll find a couple of things:
 
-- Accessible landmarks in the `DefaultLayout.astro` file such as `header`, `main` and `footer`
-- Accessible landmark examples in the `index.astro` file such as `section` and `nav`
+- Utilizes Astro's experimental SSR feature to redirect users to `/login` is there not logged in
+  - Uses `localStorage` to set a value of `isLoggedIn` to true when you log in using the login form
+  - Contains a `login.astro` page with an example login using a separate `LoginLayout.astro` layout
+  - `login.astro` contains example login data and a warning notification when the credentials are incorrect
+- Contains a dashboard example in the `index.astro` page using the `DefaultLayout.astro` layout
+- Several examples of admin pages such as `media.astro`, `messages.astro`, `products.astro`, `settings.astro` and `users.astro`
+- `Button.astro` component with simple, accessible styling and a property for `type="submit"`
+- `LoginForm.astro` component with a basic accessible login form and some form controls
 - `SkipLinks.astro` component to skip to either the main menu or the main content
-- `Navigation.astro` component with keyboard accessible (dropdown) navigation (arrow keys, escape key)
+- `Navigation.astro` component with keyboard accessible (dropdown) navigation (arrow keys, escape key), which is expandable on desktop
+  - This component is a comprehensive sidebar navigation on desktop with the option to expand or collapse
+  - The users menu width preference is stored in a `localStorage` value so that it is preserved during page reloads
+  - The navigation automatically switches to an accessible mobile navigation for viewport widths below the medium breakpoint
 - `ResponsiveToggle.astro` component with an accessible responsive toggle button for the navigation
-- `DarkMode.astro` component toggle with accessible button and a user system preferred color scheme
-- Outline focus indicator which works on dark and light backgrounds
-- `.sr-only` token class for screen reader only text content
+- `DarkMode.astro` component toggle with accessible button which saves the users preference in the `localStorage`
+- `EmpyState.astro` component which can be displayed on pages that don't have any data yet
+- `404.astro` provides a custom 404 error page which you can adjust to your needs
+- `.sr-only` utility class for screen reader only text content
 - `prefers-reduced-motion` disables animations for users that have this preference turned on
+- Outline focus indicator which works on dark and light backgrounds
+- [Accessible Astro Components](https://github.com/markteekman/accessible-astro-components) package comes preinstalled with extra components such as Accordions, Modals and Notifications
+- Nate Moore's awesome [Astro Icon](https://github.com/natemoo-re/astro-icon) package is also preinstalled which can be applied to different use cases
 
-## Extra features
+## Login & Authentication
 
-- Comes with a demo blog which is rendered using fetched data and the Accessible Astro Card Component
+This theme contains an example login flow, using a fake email address and password and by utilizing the `localStorage` and Astro's (experimental) SSR feature. All pages redirect to `/login.astro` if you haven't logged in using `Astro.redirect`. After logging in the value `isLoggedIn` is set to `true` and your authenticated to view the admin pages.
+
+⚠️ **Note: this is just an example, make sure you build your own secure authentication. Checkout this [official Astro Blog post](https://astro.build/blog/experimental-server-side-rendering/) for more information about authentication and login.**
+
+### LoginForm.astro
+
+```js
+<script>
+// fetch your data from an API
+// and replace that an actual user object for example
+
+submitButton.addEventListener('click', event => {
+  event.preventDefault()
+
+  if (emailInput.value === 'admin@astro.build' && passwordInput.value === 'Astronaut570') {
+    localStorage.setItem('isLoggedIn', 'true')
+    window.location.href = '/'
+  }
+})
+</script>
+```
+
+### DefaultLayout.astro
+
+```js
+---
+let isLoggedIn = localStorage.getItem('isLoggedIn')
+
+if (isLoggedIn !== 'true') {
+  return Astro.redirect('/login')
+}
+---
+```
 
 ## Utilities
 
-👉🏻 &nbsp;  _Note: Examples are included in the **index.astro** file_
-
-This starter contains some extra **Design System** like utility classes to aid in the global layout of your project. All of this can be found in the `public/scss/base` directory, and compiles in the `globals.scss` file. Using these primitives is totally optional, use or remove at your own preference :) What it contains:
+This theme contains some extra **Design System** like utility classes to aid in the global layout of your project. All of this can be found in the `public/scss/base` directory, and compiles in the `globals.scss` file. Using these primitives is totally optional, use or remove at your own preference :) What it contains:
 
 - Reset file to reset browser defaults and ensure everything looks good
 - Some basic font settings, such as responsive heading sizes
@@ -197,7 +240,7 @@ If you find that something isn't working right then I'm always happy to hear it 
 1. [Filing an issue](https://github.com/markteekman/accessible-astro-starter/issues)
 2. [Submitting a pull request](https://github.com/markteekman/accessible-astro-starter/pulls)
 3. [Starting a discussion](https://github.com/markteekman/accessible-astro-starter/discussions)
-4. [Buying me a coffee!](https://www.buymeacoffee.com/markteekman) This keeps the servers up and running 😊
+4. [Buying me a coffee!](https://www.buymeacoffee.com/markteekman) Help keep the demo's and docs up and running 😊
 
 ## Thank you!
 

@@ -1,27 +1,61 @@
 ---
-import DarkMode from './DarkMode.astro'
 import ResponsiveToggle from './ResponsiveToggle.astro'
+import { Icon } from 'astro-icon'
 ---
 
-<div id="main-navigation" class="is-desktop padding-16 color-neutral">
-  <div class="container">
+<div id="main-navigation" class="is-desktop">
+  <div class="desktop-menu">
+    <nav>
+      <ul>
+        <li class="menu-item brand-logo">
+          <a href="/">
+            <img src={(await import('../assets/img/logo.svg')).default} alt="Your Logo">
+          </a>
+        </li>
+        <li class="menu-item">
+          <button class="toggle-expanded-view">
+            <Icon pack="majesticons" name="chevron-double-right-line" /> 
+            <div class="sr-only">Collapse</div>
+          </button>
+        </li>
+        <slot />
+        <li class="menu-item bottom-position">
+          <a href="/login">
+            <Icon pack="majesticons" name="logout-line" /> 
+            <span class="sr-only">Logout</span>
+          </a>
+        </li>
+        <li class="menu-item bottom-position user-avatar">
+          <a href="/settings">
+            <img src="/user-avatar.png" alt="">
+            <span class="sr-only">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="container mobile-menu padding-16">
     <a href="/">
       <img src={(await import('../assets/img/logo.svg')).default} alt="Your Logo">
     </a>
-    <div class="wrapper">
-      <nav class="desktop-menu">
-        <ul>
-          <slot />
-        </ul>
-      </nav>
-      <DarkMode client:load />
-      <ResponsiveToggle client:load />
-    </div>
-    <nav class="mobile-menu">
+    <ResponsiveToggle client:load />
+    <nav>
       <ul>
         <slot />
+        <li class="menu-item">
+          <a href="/login">
+            <Icon pack="majesticons" name="logout-line" /> 
+            <span class="sr-only">Logout</span>
+          </a>
+        </li>
+        <li class="menu-item user-avatar">
+          <a href="/settings">
+            <img src="/user-avatar.png" alt="">
+            <span class="sr-only">Settings</span>
+          </a>
+        </li>
       </ul>
-      </nav>
+    </nav>
   </div>
 </div>
 
@@ -29,8 +63,10 @@ import ResponsiveToggle from './ResponsiveToggle.astro'
   // variables
   const mainNav = document.querySelector('#main-navigation')
   const mainMenu = mainNav.querySelector('ul')
-  const dropdownMenus = [...document.querySelectorAll('.has-dropdown button')]
-
+  const toggleExpandedButton = document.querySelector('.toggle-expanded-view')
+  const menuIconLabels = [...mainNav.querySelectorAll('.sr-only')]
+  const mediaQuery = window.matchMedia('(min-width: 48em)')
+  let menuIsExpanded = localStorage.getItem('menuIsExpanded')
 
   // functions
   const setActiveMenuItem = () => {
@@ -44,54 +80,35 @@ import ResponsiveToggle from './ResponsiveToggle.astro'
     })
   }
 
-  const checkMenuSize = () => {
-    const mainNavWidth = mainNav.getBoundingClientRect().width
-    const desktopMenuWidth = document.querySelector('.desktop-menu').getBoundingClientRect().width
-    const logoWidthBuffer = 300
-    const totalMenuWidth = parseInt(desktopMenuWidth) + logoWidthBuffer
+  const expandMenu = () => {
+    mainNav.classList.add('is-expanded')
+    localStorage.setItem('menuIsExpanded', 'true')
+    
+    menuIconLabels.forEach(menuIconLabel => {
+      menuIconLabel.classList.remove('sr-only')
+    })
+  }
 
-    if (totalMenuWidth >= mainNavWidth) {
-      mainNav.classList.remove('is-desktop')
-      mainNav.classList.add('is-mobile')
-    } else if (totalMenuWidth <= mainNavWidth) {
+  const minifyMenu = () => {
+    mainNav.classList.remove('is-expanded')
+    localStorage.setItem('menuIsExpanded', null)
+    
+    menuIconLabels.forEach(menuIconLabel => {
+      menuIconLabel.classList.add('sr-only')
+    })
+  }
+
+  const checkViewportWidth = () => {
+    if (mediaQuery.matches) {
       mainNav.classList.add('is-desktop')
       mainNav.classList.remove('is-mobile')
-    }
-  }
 
-  const isOutOfViewport = element => {
-    const elementBounds = element.getBoundingClientRect()
-    return elementBounds.right > (window.innerWidth || document.documentElement.clientWidth)
-  }
-
-  const openDropdownMenu = dropdownMenu => {
-    const dropdownList = dropdownMenu.parentNode.querySelector('ul')
-
-    dropdownMenu.classList.add('show')
-    dropdownMenu.setAttribute('aria-expanded', 'true')
-
-    if (isOutOfViewport(dropdownList)) {
-      dropdownList.style.left = 'auto'
-    }
-  }
-
-  const closeDropdownMenu = dropdownMenu => {
-    dropdownMenu.classList.remove('show')
-    dropdownMenu.setAttribute('aria-expanded', 'false')
-  }
-
-  const closeAllDropdownMenus = () => {
-    for (let i = 0; i < dropdownMenus.length; i++) {
-      closeDropdownMenu(dropdownMenus[i])
-    }
-  }
-
-  const toggleDropdownMenu = event => {
-    if (event.target.getAttribute('aria-expanded') === 'false') {
-      closeAllDropdownMenus()
-      openDropdownMenu(event.target)
+      minifyMenu()
     } else {
-      closeDropdownMenu(event.target)
+      mainNav.classList.remove('is-desktop')
+      mainNav.classList.add('is-mobile')
+
+      minifyMenu()
     }
   }
 
@@ -99,14 +116,13 @@ import ResponsiveToggle from './ResponsiveToggle.astro'
   mainMenu && mainMenu.addEventListener('keydown', event => {
     const currentMenuItem = event.target.closest('li')
     const menuItems = [...mainMenu.querySelectorAll('.menu-item')]
-    const currentDropdownMenu = event.target.closest('.has-dropdown button')
-    const currentDropdownMenuItem = event.target.closest('.has-dropdown li')
     const currentIndex = menuItems.findIndex(item => item === currentMenuItem)
 
     const key = event.key
     let targetItem
 
-    if (key === 'ArrowRight') {
+    if (key === 'ArrowDown') {
+      event.preventDefault()
       if (menuItems.indexOf(currentMenuItem) === menuItems.length - 1) {
         targetItem = menuItems[0]
       } else {
@@ -114,7 +130,8 @@ import ResponsiveToggle from './ResponsiveToggle.astro'
       }
     }
 
-    if (key === 'ArrowLeft') {
+    if (key === 'ArrowUp') {
+      event.preventDefault()
       if (menuItems.indexOf(currentMenuItem) === 0) {
         targetItem = menuItems[menuItems.length - 1]
       } else {
@@ -126,70 +143,25 @@ import ResponsiveToggle from './ResponsiveToggle.astro'
       targetItem = menuItems[0]
     }
 
-    if (currentDropdownMenu) {
-      const firstDropdownItem = currentDropdownMenu.nextElementSibling.querySelector('li')
-
-      if (key === 'ArrowDown') {
-        event.preventDefault()
-        openDropdownMenu(currentDropdownMenu)
-        targetItem = firstDropdownItem
-      }
-
-      if (key === 'Escape') {
-        closeDropdownMenu(currentDropdownMenu)
-      }
-    }
-
-    if (currentDropdownMenuItem) {
-      const currentDropdownList = currentDropdownMenuItem.parentNode
-      const dropdownMenuItems = [...currentDropdownList.querySelectorAll('li')]
-      const currentIndex = dropdownMenuItems.findIndex(item => item === currentDropdownMenuItem)
-
-      if (key === 'ArrowDown') {
-        event.preventDefault()
-
-        if (dropdownMenuItems.indexOf(currentDropdownMenuItem) === dropdownMenuItems.length - 1) {
-          targetItem = dropdownMenuItems[0]
-        } else {
-          targetItem = dropdownMenuItems[currentIndex + 1]
-        }
-      }
-
-      if (key === 'ArrowUp') {
-        event.preventDefault()
-
-        if (dropdownMenuItems.indexOf(currentDropdownMenuItem) === 0) {
-          targetItem = dropdownMenuItems[dropdownMenuItems.length - 1]
-        } else {
-          targetItem = dropdownMenuItems[currentIndex - 1]
-        }
-      }
-
-      if (key === 'Escape') {
-        const currentDropdownMenu = currentDropdownList.previousElementSibling
-        targetItem = currentDropdownMenu.parentNode
-        closeAllDropdownMenus()
-      }
-    }
-
     if (targetItem) {
       targetItem.querySelector('a, button, input').focus()
     }
   })
 
-
-  dropdownMenus && dropdownMenus.forEach(dropdownMenu => {
-    dropdownMenu.addEventListener('click', toggleDropdownMenu)
+  toggleExpandedButton.addEventListener('click', () => {
+    mainNav.classList.contains('is-expanded')
+      ? minifyMenu()
+      : expandMenu()
   })
+
+  window.addEventListener('resize', checkViewportWidth)
 
   setActiveMenuItem()
-  checkMenuSize()
-  window.addEventListener('resize', checkMenuSize)
-  window.addEventListener('click', event => {
-    if (!event.target.hasAttribute('aria-haspopup') && !event.target.classList.contains('submenu-item')) {
-      closeAllDropdownMenus()
-    }
-  })
+  checkViewportWidth()
+
+  if (menuIsExpanded === 'true') {
+    expandMenu()
+  }
 </script>
 
 <style lang="scss" is:global>
@@ -199,6 +171,8 @@ import ResponsiveToggle from './ResponsiveToggle.astro'
   @use '../assets/scss/base/size' as *;
 
   #main-navigation {
+    background-color: var(--neutral-900);
+
     > .container {
       display: flex;
       justify-content: space-between;
@@ -206,11 +180,12 @@ import ResponsiveToggle from './ResponsiveToggle.astro'
     }
 
     &.is-desktop {
-      .desktop-menu { 
-        visibility: visible;
-        z-index: 0;
-        position: static;
-      }
+      width: 60px;
+      min-height: 100vh;
+      position: fixed;
+      z-index: 1;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+      // transition: width 0.2s ease-in-out;
 
       .mobile-menu { 
         display: none; 
@@ -221,115 +196,180 @@ import ResponsiveToggle from './ResponsiveToggle.astro'
       flex-direction: column;
 
       .mobile-menu { 
-        display: none; 
+        nav {
+          display: none; 
+        }
 
-        &.show {
+        &.show nav {
           display: block;
         }
-      }
-
-      .desktop-menu { 
-        visibility: hidden;
-        z-index: -99;
-        position: absolute;
-        left: 0;
       }
 
       .responsive-toggle {
         display: block;
       }
-    }
 
-    .wrapper {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
+      .desktop-menu {
+        display: none;
+      }
     }
 
     nav {
+      width: 100%;
+
       > ul {
         display: flex;
-        gap: 1.5rem;
+        width: 100%;
 
         .is-active {
           font-weight: bold;
         }
       }
-    }
 
-    .mobile-menu {
-      flex-basis: 100%;
-      padding: 2rem 0;
-
-      > ul {
-        flex-direction: column;
-
-        ul {
-          position: relative;
-          margin-top: 1rem;
-        }
+      li,
+      a,
+      button {
+        width: 100%;
       }
 
       a,
       button {
-        display: block;
-        width: 100%;
-        padding: 0.5rem 0;
+        display: flex;
+        justify-content: center;
+        padding: 1rem 0;
+        color: var(--neutral-400);
+        transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+      }
+
+      .user-avatar a {
+        padding: 0;
+        
+        img {
+          padding: 0.5rem;
+          max-width: 60px;
+          border-radius: 100%;
+        }
+      }
+
+      button {
+        border: none;
+      }
+
+      svg {
+        width: 30px;
+      
+        path {
+          fill: var(--neutral-600);
+          transition: fill 0.2s ease-in-out;
+        }
+      }
+
+      a:hover,
+      button:hover, 
+      a.is-active {
+        color: var(--neutral-800);
+        background-color: var(--secondary-200);
+
+        svg path {
+          fill: var(--neutral-800);
+        }
       }
     }
 
-    .has-dropdown {
-      position: relative;
+    .desktop-menu {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100vh;
 
-      > button {
+      ul {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0;
-        margin-top: -1px;
-        border: none;
-        color: var(--action-color);
-        text-decoration: underline;
-        @include size-16;
+        min-height: 100vh;
+        position: relative;
 
-        &::after {
-          content: '';
-          width: 0.75rem;
-          height: 0.75em;
-          margin-top: -0.25rem;
-          border-style: solid;
-          border-width: 0.2em 0.2em 0 0;
-          transform: rotate(135deg);
+        .bottom-position {
+          position: absolute;
         }
 
-        &.show {
-          &::after {
-            margin-top: 0.25rem;
-            transform: rotate(-45deg);
+        .bottom-position:nth-last-of-type(1) { bottom: 0; }
+        .bottom-position:nth-last-of-type(2) { bottom: 3.75rem; }
+        .bottom-position:nth-last-of-type(3) { bottom: 8rem; }
+
+        .brand-logo {
+          padding: 1rem;
+          background-color: var(--neutral-700);
+
+          a {
+            padding: 0;
+
+            &:hover,
+            &.is-active {
+              background-color: transparent;
+            }
           }
 
-          ~ ul {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+          img {
+            max-height: 18px;
           }
         }
       }
 
-      ul {
-        display: none;
-        position: absolute;
-        z-index: 100;
-        min-width: 200px;
-        top: 125%;
-        right: 0;
-        bottom: auto;
-        left: 0;
-        padding: 1rem;
-        background-color: var(--neutral-background);
-        border: 2px solid black;
-        @include elevation-300;
-        @include radius-small;
+      .toggle-expanded-view svg {
+        padding-top: 3px;
+      }
+    }
+
+    &.is-expanded {
+      width: 200px;
+
+      .desktop-menu {
+        a,
+        button {
+          justify-content: left;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 1rem 0.75rem;
+        }
+
+        .user-avatar a {
+          padding: 0.5rem 0.3rem 0;
+        }
+      } 
+
+      ~ main {
+        margin-left: 200px;
+      }
+    }
+
+    .mobile-menu nav {
+      > ul {
+        flex-direction: column;
+        margin-top: 1rem;
+
+        a {
+          justify-content: start;
+          align-items: center;
+          gap: 0.5rem;
+
+          &:hover {
+            color: var(--secondary-200);
+            background-color: transparent;
+
+            svg path {
+              fill: var(--secondary-200);
+            }
+          }
+        }
+      }
+
+      svg {
+        width: 35px;
+      
+        path {
+          transition: fill 0.2s ease-in-out;
+        }
       }
     }
   }

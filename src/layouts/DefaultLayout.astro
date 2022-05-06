@@ -1,10 +1,17 @@
 ---
 import '../assets/scss/globals.scss'
-import Header from '../components/Header.astro'
-import Footer from '../components/Footer.astro'
+import DarkMode from '../components/DarkMode.astro'
+import Navigation from '../components/Navigation.astro'
+import { Icon } from 'astro-icon'
 
 const {title} = Astro.props
-let subtitle = 'Accessible Astro Starter'
+let subtitle = 'Accessible Astro Dashboard'
+
+let isLoggedIn = localStorage.getItem('isLoggedIn')
+
+if (isLoggedIn !== 'true') {
+  return Astro.redirect('/login')
+}
 ---
 
 <html lang="en" dir="ltr">
@@ -22,43 +29,86 @@ let subtitle = 'Accessible Astro Starter'
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 
     <!-- open graph -->
-    <meta property="og:title" content="Accessible Astro Starter">
-    <meta property="og:description" content="A starter project with accessible features using Astro static site builder. Contains accessible landmarks, skip links, a dark mode color scheme, better focus outline and keyboard menu navigation.">
+    <meta property="og:title" content="Accessible Astro Dashboard">
+    <meta property="og:description" content="An Accessible Dashboard Theme for Astro including a login page, a dashboard page and several other pages and components.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://starter.accessible-astro.dev">
-    <meta property="og:image" content="assets/social-preview-image.png">
+    <meta property="og:url" content="https://dashboard.accessible-astro.dev">
+    <meta property="og:image" content="/social-preview-image.png">
 
     <!-- page title -->
     <title>{title} - {subtitle}</title>
   </head>
   <body>
-    <Header />
-    <main id="main-content">
-      <slot />
-    </main>
-    <Footer />
+    <div class="ui-controls">
+      <DarkMode client:load />
+    </div>
+    <div class="admin-interface">
+      <Navigation>
+        <li class="menu-item">
+          <a href="/">
+            <Icon pack="majesticons" name="home-line" /> 
+            <span class="sr-only">Dashboard</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/products">
+            <Icon pack="majesticons" name="shopping-cart-line" /> 
+            <span class="sr-only">Products</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/users">
+            <Icon pack="majesticons" name="users-line" /> 
+            <span class="sr-only">Users</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/messages">
+            <Icon pack="majesticons" name="messages-line" /> 
+            <span class="sr-only">Messages</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/media">
+            <Icon pack="majesticons" name="image-line" /> 
+            <span class="sr-only">Media</span>
+          </a>
+        </li>
+      </Navigation>    
+      <main id="main-content">
+        <slot />
+      </main>
+    </div>
   </body>
 </html>
 
 <style lang="scss">
-  // sticky footer on low content pages
-  html,
-  body {
-    height: 100%;
-    overflow-x: hidden;
+  @use '../assets/scss/base/breakpoint' as *;
+
+  .ui-controls {
+    position: absolute;
+    top: 1.15rem;
+    right: 3.5rem;
+
+    @include breakpoint(medium) {
+      right: 1.15rem;
+    }
   }
 
-  body {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--background);
-
-    main {
-      flex: 1 0 auto;
+  .admin-interface {
+    @include breakpoint(medium) {
+      display: grid;
+      grid-template-columns: 1fr auto;
     }
 
-    footer {
-      flex-shrink: 0;
+    main {
+      padding: 2rem;
+
+      @include breakpoint(medium) {
+        margin-left: 60px;
+        padding: 6rem;
+        // transition: margin-left 0.2s ease-in-out;
+      }
     }
   }
 </style>

@@ -1,0 +1,29 @@
+---
+const {
+  type = null
+} = Astro.props
+---
+
+<button type={type}>
+  <slot />
+</button>
+
+<style lang="scss">
+  @use '../assets/scss/base/border' as *;
+
+  button {
+    font-weight: bold;
+    color: var(--neutral-900);
+    background-color: var(--secondary-200);
+    border: 2px solid var(--secondary-200);
+    transition: all 0.15s ease-in-out;
+    @include radius-small;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+      background-color: var(--secondary-100);
+      border: 2px solid var(--secondary-100);
+    }
+  }
+</style>

@@ -2,55 +2,33 @@
 import DefaultLayout from '../layouts/DefaultLayout.astro'
 ---
 
-<DefaultLayout title="Home">
-  <section class="margin-48">
-    <div class="container">
-      <h1>Accessible Astro <em>Starter</em></h1><br>
-    </div>
+<DefaultLayout title="Dashboard">
+  <section>
+    <h1>Welcome Astronaut 🧑‍🚀</h1><br>
+    <p class="size-20">Build fast dashboards, faster (and accessible).</p>
   </section>
-  <section class="padding-48 color-primary">
-    <div class="container">
-      <h2 class="margin-16 bottom">Auto Grid</h2>
-    </div>
-    <div class="container" data-auto-grid="3">
-      <div class="box text-neutral-100 bg-neutral-900 space-32 radius-large elevation-500" data-animation="fade-in">
-        <h3>Column 1</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem accusantium placeat eius officiis veniam totam. Earum eos et voluptate dolorem. </p>
+  <section class="margin-32">
+    <div class="space-content">
+      <div class="contents">
+        <h2>Widgets</h2>
+        <p id="current-time" class="size-12"></p>
       </div>
-      <div class="box text-neutral-100 bg-neutral-900 space-32 radius-large elevation-500" data-animation="fade-in" data-animation-delay="0.25s">
-        <h3>Column 2</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem accusantium placeat eius officiis veniam totam. Earum eos et voluptate dolorem.</p>
-      </div>
-      <div class="box text-neutral-100 bg-neutral-900 space-32 radius-large elevation-500" data-animation="fade-in" data-animation-delay="0.5s">
-        <h3>Column 3</h3>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem accusantium placeat eius officiis veniam totam. Earum eos et voluptate dolorem.</p>
-      </div>
-    </div>
-    <div class="container margin-16 top">
-      <strong><a href="#">Tab to me!</a></strong>
-    </div>
-  </section>
-  <section class="margin-64">
-    <div class="container">
-      <div class="grid">
-        <div class="small-12">
-          <h2>12 Column Grid</h2>
-        </div>
-        <div class="small-12 medium-3 space-content">
-          <h3>Sidebar</h3>
-          <ul>
-            <li>Lorem ipsum dolor sit amet.</li>
-            <li>Lorem ipsum dolor sit amet.</li>
-            <li>Lorem ipsum dolor sit amet.</li>
-            <li>Lorem ipsum dolor sit amet.</li>
-          </ul>
-        </div>
-        <div class="small-12 medium-8 offset-medium-4 space-content">
-          <h3>Main</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi mollitia alias sunt accusamus reiciendis fuga delectus, repellendus molestiae dolore illo iusto eligendi eaque qui hic facilis assumenda! Velit, minus, nobis. <strong><a href="#">Tab to me!</a></strong></p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi mollitia alias sunt accusamus reiciendis fuga delectus, repellendus molestiae dolore illo iusto eligendi eaque qui hic facilis assumenda! Velit, minus, nobis.</p>
-        </div>
+      <div class="grid small-grid-1 medium-grid-2 large-grid-3">
+        <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
+        <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
+        <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
+        <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
+        <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
+        <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
+        <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
+        <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
+        <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
       </div>
     </div>
   </section>
 </DefaultLayout>
+
+<script>
+  const date = new Date()
+  document.querySelector('#current-time').innerHTML = `<em>${date.toDateString()}</em>`
+</script>

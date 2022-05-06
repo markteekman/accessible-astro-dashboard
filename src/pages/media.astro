@@ -1,0 +1,21 @@
+---
+import DefaultLayout from '../layouts/DefaultLayout.astro'
+import Button from '../components/Button.astro'
+import EmpyState from '../components/EmpyState.astro';
+---
+
+<DefaultLayout title="Media">
+  <section>
+    <h1>Media</h1><br>
+    <p class="size-20">Lorem ipsum dolor sit amet.</p>
+  </section>
+  <section class="margin-32">
+    <div class="space-content">
+      <h2>Media overview</h2>
+      <EmpyState>
+        You haven't added any media items yet. Start by adding some.
+      </EmpyState>
+      <Button>Add your first media item</Button>
+    </div>
+  </section>
+</DefaultLayout>
