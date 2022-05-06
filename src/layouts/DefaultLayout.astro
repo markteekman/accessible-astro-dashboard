@@ -6,12 +6,6 @@ import { Icon } from 'astro-icon'
 
 const {title} = Astro.props
 let subtitle = 'Accessible Astro Dashboard'
-
-let isLoggedIn = localStorage.getItem('isLoggedIn')
-
-if (isLoggedIn !== 'true') {
-  return Astro.redirect('/login')
-}
 ---
 
 <html lang="en" dir="ltr">
@@ -51,25 +45,25 @@ if (isLoggedIn !== 'true') {
           </a>
         </li>
         <li class="menu-item">
-          <a href="/products">
+          <a href="/products/">
             <Icon pack="majesticons" name="shopping-cart-line" /> 
             <span class="sr-only">Products</span>
           </a>
         </li>
         <li class="menu-item">
-          <a href="/users">
+          <a href="/users/">
             <Icon pack="majesticons" name="users-line" /> 
             <span class="sr-only">Users</span>
           </a>
         </li>
         <li class="menu-item">
-          <a href="/messages">
+          <a href="/messages/">
             <Icon pack="majesticons" name="messages-line" /> 
             <span class="sr-only">Messages</span>
           </a>
         </li>
         <li class="menu-item">
-          <a href="/media">
+          <a href="/media/">
             <Icon pack="majesticons" name="image-line" /> 
             <span class="sr-only">Media</span>
           </a>
@@ -81,6 +75,14 @@ if (isLoggedIn !== 'true') {
     </div>
   </body>
 </html>
+
+<script>
+  let isLoggedIn = await localStorage.getItem('isLoggedIn')
+
+  if (isLoggedIn === null) {
+    window.location.href = '/login'
+  }
+</script>
 
 <style lang="scss">
   @use '../assets/scss/base/breakpoint' as *;
@@ -107,7 +109,6 @@ if (isLoggedIn !== 'true') {
       @include breakpoint(medium) {
         margin-left: 60px;
         padding: 6rem;
-        // transition: margin-left 0.2s ease-in-out;
       }
     }
   }
