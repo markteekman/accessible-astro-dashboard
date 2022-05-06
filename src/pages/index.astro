@@ -1,5 +1,6 @@
 ---
 import DefaultLayout from '../layouts/DefaultLayout.astro'
+import DashboardWidget from '../components/DashboardWidget.astro';
 ---
 
 <DefaultLayout title="Dashboard">
@@ -13,7 +14,17 @@ import DefaultLayout from '../layouts/DefaultLayout.astro'
         <h2>Widgets</h2>
         <p id="current-time" class="size-12"></p>
       </div>
-      <div class="grid small-grid-1 medium-grid-2 large-grid-3">
+      <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height">
+        <DashboardWidget />
+        <DashboardWidget
+          number="+33"
+          title="New images added"
+        />
+        <DashboardWidget
+          number="-120"
+          title="Products sold"
+          type="error"
+        />
         <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
         <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
         <div class="radius-large space-96" style="border: 4px dashed grey;"></div>
