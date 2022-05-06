@@ -7,26 +7,25 @@ import { Icon } from 'astro-icon'
   <div class="desktop-menu">
     <nav>
       <ul>
-        <li class="menu-item brand-logo">
-          <a href="/">
-            <img src={(await import('../assets/img/logo.svg')).default} alt="Your Logo">
-          </a>
+        <li class="brand-logo">
+          <img src={(await import('../assets/img/logo.svg')).default} >
+          <span class="sr-only">Brand Name</span>
         </li>
         <li class="menu-item">
-          <button class="toggle-expanded-view">
+          <button class="toggle-expanded-view" aria-expanded="false">
             <Icon pack="majesticons" name="chevron-double-right-line" /> 
-            <div class="sr-only">Collapse</div>
+            <span class="sr-only">Expand menu</span>
           </button>
         </li>
         <slot />
         <li class="menu-item bottom-position">
-          <a href="/login">
+          <a href="/login/">
             <Icon pack="majesticons" name="logout-line" /> 
             <span class="sr-only">Logout</span>
           </a>
         </li>
         <li class="menu-item bottom-position user-avatar">
-          <a href="/settings">
+          <a href="/settings/" class="logout-link">
             <img src="/user-avatar.png" alt="">
             <span class="sr-only">Settings</span>
           </a>
@@ -63,10 +62,10 @@ import { Icon } from 'astro-icon'
   // variables
   const mainNav = document.querySelector('#main-navigation')
   const mainMenu = mainNav.querySelector('ul')
-  const toggleExpandedButton = document.querySelector('.toggle-expanded-view')
+  const toggleExpandedView = document.querySelector('.toggle-expanded-view')
   const menuIconLabels = [...mainNav.querySelectorAll('.sr-only')]
   const mediaQuery = window.matchMedia('(min-width: 48em)')
-  let menuIsExpanded = localStorage.getItem('menuIsExpanded')
+  let isMenuExpanded = localStorage.getItem('isMenuExpanded')
 
   // functions
   const setActiveMenuItem = () => {
@@ -82,16 +81,20 @@ import { Icon } from 'astro-icon'
 
   const expandMenu = () => {
     mainNav.classList.add('is-expanded')
-    localStorage.setItem('menuIsExpanded', 'true')
+    localStorage.setItem('isMenuExpanded', 'true')
+    toggleExpandedView.setAttribute('aria-expanded', 'true')
+    toggleExpandedView.querySelector('span').textContent = 'Collpase menu'
     
     menuIconLabels.forEach(menuIconLabel => {
       menuIconLabel.classList.remove('sr-only')
     })
   }
 
-  const minifyMenu = () => {
+  const collapseMenu = () => {
     mainNav.classList.remove('is-expanded')
-    localStorage.setItem('menuIsExpanded', null)
+    localStorage.setItem('isMenuExpanded', null)
+    toggleExpandedView.setAttribute('aria-expanded', 'false')
+    toggleExpandedView.querySelector('span').textContent = 'Expand menu'
     
     menuIconLabels.forEach(menuIconLabel => {
       menuIconLabel.classList.add('sr-only')
@@ -103,12 +106,12 @@ import { Icon } from 'astro-icon'
       mainNav.classList.add('is-desktop')
       mainNav.classList.remove('is-mobile')
 
-      minifyMenu()
+      collapseMenu()
     } else {
       mainNav.classList.remove('is-desktop')
       mainNav.classList.add('is-mobile')
 
-      minifyMenu()
+      collapseMenu()
     }
   }
 
@@ -148,9 +151,9 @@ import { Icon } from 'astro-icon'
     }
   })
 
-  toggleExpandedButton.addEventListener('click', () => {
+  toggleExpandedView.addEventListener('click', () => {
     mainNav.classList.contains('is-expanded')
-      ? minifyMenu()
+      ? collapseMenu()
       : expandMenu()
   })
 
@@ -159,7 +162,7 @@ import { Icon } from 'astro-icon'
   setActiveMenuItem()
   checkViewportWidth()
 
-  if (menuIsExpanded === 'true') {
+  if (isMenuExpanded === 'true') {
     expandMenu()
   }
 </script>
@@ -185,7 +188,6 @@ import { Icon } from 'astro-icon'
       position: fixed;
       z-index: 1;
       box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
-      // transition: width 0.2s ease-in-out;
 
       .mobile-menu { 
         display: none; 
@@ -265,8 +267,10 @@ import { Icon } from 'astro-icon'
       }
 
       a:hover,
+      a:focus,
+      a.is-active,
       button:hover, 
-      a.is-active {
+      button:not(.toggle-expanded-view):focus {
         color: var(--neutral-800);
         background-color: var(--secondary-200);
 
@@ -298,17 +302,12 @@ import { Icon } from 'astro-icon'
         .bottom-position:nth-last-of-type(3) { bottom: 8rem; }
 
         .brand-logo {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
           padding: 1rem;
+          color: var(--neutral-100);
           background-color: var(--neutral-700);
-
-          a {
-            padding: 0;
-
-            &:hover,
-            &.is-active {
-              background-color: transparent;
-            }
-          }
 
           img {
             max-height: 18px;
@@ -316,8 +315,21 @@ import { Icon } from 'astro-icon'
         }
       }
 
-      .toggle-expanded-view svg {
-        padding-top: 3px;
+      .toggle-expanded-view {
+        svg {
+          padding-top: 3px;
+        }
+
+        span {
+        text-decoration: underline;
+        }
+
+        &:hover,
+        &:focus {
+          span {
+            text-decoration: none;
+          }
+        }
       }
     }
 
@@ -353,7 +365,8 @@ import { Icon } from 'astro-icon'
           align-items: center;
           gap: 0.5rem;
 
-          &:hover {
+          &:hover,
+          &:focus {
             color: var(--secondary-200);
             background-color: transparent;
 
