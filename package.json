@@ -1,7 +1,7 @@
 {
   "name": "accessible-astro-dashboard",
   "description": "An Accessible Dashboard Theme for Astro including a login page, a dashboard page and several other pages and components.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Mark Teekman",
   "homepage": "https://accessible-astro.dev",
   "scripts": {
