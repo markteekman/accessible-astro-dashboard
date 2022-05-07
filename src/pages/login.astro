@@ -24,14 +24,14 @@ import { Icon } from 'astro-icon'
         </div>
         <div class="inner__form space-content">
           <Notification>
-            <Icon pack="majesticons" name="information-circle-line" /><p class="size-12">Log in using <strong>admin@astro.demo</strong> and <strong>Astronaut570</strong> as the password.</p>          
+            <Icon pack="majesticons" name="information-circle-line" /><p class="size-14">Log in using <strong>admin@astro.demo</strong> and <strong>Astronaut570</strong>.</p>          
           </Notification>
           <div class="space-content">
             <h1>Login</h1>
             <LoginForm />
           </div>
         </div>
-        <div class="text-neutral-700">
+        <div class="login__footer text-neutral-700">
           <p><em>Build fast dashboards, faster.</em></p>
         </div>
       </div>
@@ -57,9 +57,13 @@ import { Icon } from 'astro-icon'
       flex-direction: column;
       justify-content: space-between;
       gap: $space-48;
+      padding: $space-24;
       z-index: 1;
-      padding: $space-48 $space-96;
-      box-shadow: 0 0 40px #2632381a;
+      
+      @include breakpoint(medium) {
+        padding: $space-48 $space-96;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+      }
     }
 
     .inner__brand {
@@ -102,6 +106,14 @@ import { Icon } from 'astro-icon'
 
     .reveal {
       animation: reveal 0.3s ease-in;
+    }
+
+    .login__footer {
+      padding-bottom: $space-24;
+
+      @include breakpoint(medium) {
+        padding-bottom: 0;
+      }
     }
   }
 
