@@ -2,6 +2,7 @@
 import '../assets/scss/globals.scss'
 import DarkMode from '../components/DarkMode.astro'
 import Navigation from '../components/Navigation.astro'
+import SkipLinks from '../components/SkipLinks.astro'
 import { Icon } from 'astro-icon'
 
 const {title} = Astro.props
@@ -33,6 +34,9 @@ let subtitle = 'Accessible Astro Dashboard'
     <title>{title} - {subtitle}</title>
   </head>
   <body>
+    <header>
+      <SkipLinks />
+    </header>
     <div class="ui-controls">
       <DarkMode client:load />
     </div>

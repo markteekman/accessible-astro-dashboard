@@ -1,7 +1,7 @@
 ---
 import DefaultLayout from '../layouts/DefaultLayout.astro'
 import Button from '../components/Button.astro'
-import EmpyState from '../components/EmpyState.astro';
+import { Modal } from 'accessible-astro-components'
 ---
 
 <DefaultLayout title="Media">
@@ -12,10 +12,29 @@ import EmpyState from '../components/EmpyState.astro';
   <section class="margin-32">
     <div class="space-content">
       <h2>Media overview</h2>
-      <EmpyState>
-        You haven't added any media items yet. Start by adding some.
-      </EmpyState>
-      <Button>Add your first media item</Button>
+      <Button id="modal1">Add new media item</Button>
+      <Modal
+        id="modal1"
+        title="Add media"
+        closeText="Cancel"
+      >
+        <p>You can use this component to include a form that adds a new media item to the list.</p>
+      </Modal>
+      <div class="grid small-grid-1 medium-grid-2 large-grid-3 equal-height">
+        <img class="media radius-large elevation-400" src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2344&q=80" alt="" />
+        <img class="media radius-large elevation-400" src="https://images.unsplash.com/photo-1608178398319-48f814d0750c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1758&q=80" alt="" />
+        <img class="media radius-large elevation-400" src="https://images.unsplash.com/photo-1454789548928-9efd52dc4031?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80" alt="" />
+        <img class="media radius-large elevation-400" src="https://images.unsplash.com/photo-1590907047706-ee9c08cf3189?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80" alt="" />
+        <img class="media radius-large elevation-400" src="https://images.unsplash.com/photo-1446941611757-91d2c3bd3d45?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1402&q=80" alt="" />
+        <img class="media radius-large elevation-400" src="https://images.unsplash.com/photo-1536697246787-1f7ae568d89a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80" alt="" />
+      </div>
     </div>
   </section>
 </DefaultLayout>
+
+<style>
+  .media {
+    max-height: 250px;
+    object-fit: cover;
+  }
+</style>
