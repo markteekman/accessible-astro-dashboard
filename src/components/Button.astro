@@ -1,10 +1,11 @@
 ---
 const {
+  id = null,
   type = null
 } = Astro.props
 ---
 
-<button type={type}>
+<button id={id} type={type}>
   <slot />
 </button>
 
