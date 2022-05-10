@@ -83,7 +83,7 @@ import { Icon } from 'astro-icon'
     mainNav.classList.add('is-expanded')
     localStorage.setItem('isMenuExpanded', 'true')
     toggleExpandedView.setAttribute('aria-expanded', 'true')
-    toggleExpandedView.querySelector('span').textContent = 'Collpase menu'
+    toggleExpandedView.querySelector('span').textContent = 'Collapse menu'
     
     menuIconLabels.forEach(menuIconLabel => {
       menuIconLabel.classList.remove('sr-only')
