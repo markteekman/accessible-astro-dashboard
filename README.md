@@ -1,6 +1,6 @@
 # Accessible Astro Dashboard
 
-This Dashboard theme is build upon the (awesome) [Astro Static Site Builder](https://astro.build/). This theme offers a couple of Accessibility components, a couple of example pages, some admin pages, a custom 404 page and some utility classes to get you building your project faster. Also check out the [Accessible Astro Components](https://github.com/markteekman/accessible-astro-components) npm package which can be used with (or without) this starter!
+This Dashboard theme is build upon the (awesome) [Astro Static Site Builder](https://astro.build/). To help you build your project *faster*, this theme includes some dedicated accessible components (such as a keyboard accessible and responsive navigation) and several components coming from the [Accessible Astro Components](https://github.com/markteekman/accessible-astro-components) npm package. This theme also includes example pages, admin pages, a custom 404 page and many **Design System** utility classes, patterns and primatives (such as grids, buttons, lists, spacings, sizes and more).
 
 [Live demo](https://dashboard.accessible-astro.dev)
 
@@ -16,23 +16,26 @@ npm install && npm start
 - `login.astro` contains example login data and a warning notification for when the credentials are incorrect
 - Contains a dashboard example in the `index.astro` page using the `DefaultLayout.astro` layout
 - Several examples of admin pages such as `media.astro`, `messages.astro`, `products.astro`, `settings.astro` and `users.astro`
-- `Button.astro` component with simple, accessible styling and a property for `type="submit"`
+- `Media.astro` component for images, used on the `media.astro` page *
+- `Pagination.astro` component for paginating results, used on the `media.astro` page *
+- `DashboardWidget.astro` component serves as an example for the dashboard on `index.astro`
+- `EmpyState.astro` component which can be displayed on pages that don't have any data yet
 - `LoginForm.astro` component with a basic accessible login form and some form controls
-- `SkipLinks.astro` component to skip to either the main menu or the main content
+- `SkipLinks.astro` component to skip to either the main menu or the main content *
 - `Navigation.astro` component with keyboard accessible navigation (arrow keys, escape key)
   - This component is a comprehensive sidebar navigation on desktop with the option to expand or collapse
   - The users menu width preference is stored in a `localStorage` value so that it is preserved during page reloads
   - The navigation automatically switches to an accessible mobile navigation for viewport widths below the medium breakpoint
 - `ResponsiveToggle.astro` component with an accessible responsive toggle button for the mobile navigation
-- `DarkMode.astro` component toggle with accessible button which saves the users preference in the `localStorage`
-- `DashboardWidget.astro` component serves as an example for the dashboard on `index.astro`
-- `EmpyState.astro` component which can be displayed on pages that don't have any data yet
+- `DarkMode.astro` component toggle with accessible button which saves the users preference in the `localStorage` *
 - `404.astro` provides a custom 404 error page which you can adjust to your needs
 - `.sr-only` utility class for screen reader only text content
 - `prefers-reduced-motion` disables animations for users that have this preference turned on
 - Outline focus indicator which works on dark and light backgrounds
 - [Accessible Astro Components](https://github.com/markteekman/accessible-astro-components) package comes preinstalled with extra components such as Accordions, Modals and Notifications
 - Nate Moore's awesome [Astro Icon](https://github.com/natemoo-re/astro-icon) package is also preinstalled which can be applied to different use cases
+
+**Provided by the Accessible Astro Components package*
 
 ## Login & Authentication
 
@@ -164,7 +167,17 @@ With two border radius utility classes (`radius-small` and `radius-large`) you c
 </div>
 ```
 
-## Colors
+### Buttons
+
+A Button primitive to easily apply button styles to your `<button>` and `<a>` tags. Simply apply the class `button` to your element. There are different variations in colors (`color-secondary`, `color-info`, `color-success`, `color-warning`, `color-error`) which is primary by default, sizing (`size-tiny`, `size-large`, `size-huge`) which is medium by default and behavior (`behavior-full`) which stretches the button to 100% width.
+
+```html
+<a href="/" class="button color-success size-huge behavior-full">
+  Click me to go to space!
+</a>
+```
+
+### Colors
 
 You can setup your own color schemes in the `_colors.scss` file. You'll find a SCSS map, which gets printed inside `_root.scss` as custom properties. There are also several color utilities such as `text-primary-#` and `bg-neutral-#` based on all colors you've defined. `text-primary-#` should be used on a parent element to give the child's the respective color.
 
