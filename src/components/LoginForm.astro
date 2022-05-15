@@ -1,5 +1,4 @@
 ---
-import Button from './Button.astro'
 import { Notification } from 'accessible-astro-components'
 import { Icon } from 'astro-icon'
 ---
@@ -16,7 +15,7 @@ import { Icon } from 'astro-icon'
     <label for="password">Password</label>
     <input type="password" name="password" required>
   </div>
-  <Button type="submit">Login</Button>
+  <button class="button color-secondary behavior-full" type="submit">Login</button>
   <label class="checkbox">
     <input type="checkbox" name="remember">
     <span>Remember me</span>
@@ -57,7 +56,6 @@ import { Icon } from 'astro-icon'
       margin-bottom: $space-8;
     }
 
-    button,
     input {
       width: 100%;
       @include radius-small;
