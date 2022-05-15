@@ -1,8 +1,7 @@
 ---
 import '../assets/scss/globals.scss'
-import DarkMode from '../components/DarkMode.astro'
 import Navigation from '../components/Navigation.astro'
-import SkipLinks from '../components/SkipLinks.astro'
+import { DarkMode, SkipLinks } from 'accessible-astro-components'
 import { Icon } from 'astro-icon'
 
 const {title} = Astro.props
@@ -93,7 +92,7 @@ let subtitle = 'Accessible Astro Dashboard'
 
   .ui-controls {
     position: absolute;
-    top: 1.15rem;
+    top: 1rem;
     right: 3.5rem;
 
     @include breakpoint(medium) {
@@ -113,6 +112,54 @@ let subtitle = 'Accessible Astro Dashboard'
       @include breakpoint(medium) {
         margin-left: 60px;
         padding: 6rem;
+      }
+    }
+  }
+</style>
+
+<style lang="scss" is:global>
+  @use "../assets/scss/base/breakpoint" as *;
+  @use "../assets/scss/base/outline" as *;
+
+  .darkmode-toggle {
+    padding: 0;
+    border: none;
+
+    svg {
+      width: 25px;
+
+      @include breakpoint(medium) {
+        width: 30px;
+        
+        path {
+          fill: var(--secondary-500);
+        }
+      }
+    
+      path {
+        transition: fill 0.2s ease-in-out;
+      }
+    }
+
+    &:hover {
+      svg path {
+        fill: var(--primary-400);
+      }
+    }
+
+    &:focus {
+      @include outline;
+    }
+  }
+
+  .darkmode .darkmode-toggle {
+    svg path {
+      fill: var(--secondary-100);
+    }
+
+    &:hover {
+      svg path {
+        fill: var(--primary-400);
       }
     }
   }
