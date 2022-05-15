@@ -1,5 +1,5 @@
 <button class="responsive-toggle" aria-expanded="false" aria-label="Open menu navigation">
-  <svg viewBox="0 0 512 512" fill="var(--secondary-100)"><path d="M64 384h384v-42.666H64V384zm0-106.666h384v-42.667H64v42.667zM64 128v42.665h384V128H64z"></path></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 8h12M6 12h12M6 16h12"/></svg>
 </button>
 
 <script>
@@ -17,7 +17,7 @@
     })
     toggle.setAttribute('aria-expanded', true)
     toggle.setAttribute('aria-label', 'Close menu navigation')
-    toggle.innerHTML = `<svg viewBox="0 0 512 512" fill="var(--secondary-100)"><path d="m289.94 256 95-95A24 24 0 0 0 351 127l-95 95-95-95a24 24 0 0 0-34 34l95 95-95 95a24 24 0 1 0 34 34l95-95 95 95a24 24 0 0 0 34-34z"></path></svg>`
+    toggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12 7 7m5 5 5 5m-5-5 5-5m-5 5-5 5"/></svg>`
   }
 
   const closeMenu = (toggle) => {
@@ -26,7 +26,7 @@
     })
     toggle.setAttribute('aria-expanded', false)
     toggle.setAttribute('aria-label', 'Open menu navigation')
-    toggle.innerHTML = `<svg viewBox="0 0 512 512" fill="var(--secondary-100)"><path d="M64 384h384v-42.666H64V384zm0-106.666h384v-42.667H64v42.667zM64 128v42.665h384V128H64z"></path></svg>`
+    toggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 8h12M6 12h12M6 16h12"/></svg>`
   }
 
   // execution
@@ -64,13 +64,14 @@
       width: 30px;
     
       path {
-        transition: fill 0.2s ease-in-out;
+        stroke: var(--secondary-100);
+        transition: stroke 0.2s ease-in-out;
       }
     }
 
     &:hover {
       svg path {
-        fill: var(--primary-400);
+        stroke: var(--primary-400);
       }
     }
   }
