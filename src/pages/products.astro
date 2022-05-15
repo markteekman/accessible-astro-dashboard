@@ -1,6 +1,5 @@
 ---
 import DefaultLayout from '../layouts/DefaultLayout.astro'
-import Button from '../components/Button.astro'
 import EmpyState from '../components/EmpyState.astro'
 import { Modal } from 'accessible-astro-components'
 ---
@@ -16,9 +15,9 @@ import { Modal } from 'accessible-astro-components'
       <EmpyState>
         You haven't added any products yet. Start by adding some.
       </EmpyState>
-      <Button id="modal1">Add your first product</Button>
+      <button id="modal-trigger" class="button color-secondary">Add your first product</button>
       <Modal
-        id="modal1"
+        triggerId="modal-trigger"
         title="Add product"
         closeText="Cancel"
       >
