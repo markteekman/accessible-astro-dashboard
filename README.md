@@ -1,8 +1,7 @@
-# Accessible Astro Dashboard
+# Verizon Internship Project 2022
+## QA Admin Dashboard
 
-This Dashboard theme is build upon the (awesome) [Astro Static Site Builder](https://astro.build/). To help you build your project *faster*, this theme includes some dedicated accessible components (such as a keyboard accessible and responsive navigation) and several components coming from the [Accessible Astro Components](https://github.com/markteekman/accessible-astro-components) npm package. This theme also includes example pages, admin pages, a custom 404 page and many **Design System** utility classes, patterns and primatives (such as grids, buttons, lists, spacings, sizes and more).
-
-[Live demo](https://dashboard.accessible-astro.dev)
+A QA Dashboard created to assist in the management of ispec request, error reporting, and delivery of final QA'd ISPEC in a single system 
 
 ## Getting started
 Run the following commands in your project folder to get started:
@@ -10,8 +9,7 @@ Run the following commands in your project folder to get started:
 npm install && npm start
 ```
 
-## (Accessibility) features
-
+## Boilerplate (Accessibility) features
 - Contains a `login.astro` page with an example login using the `localStorage` and a separate `LoginLayout.astro` layout
 - `login.astro` contains example login data and a warning notification for when the credentials are incorrect
 - Contains a dashboard example in the `index.astro` page using the `DefaultLayout.astro` layout
@@ -35,8 +33,6 @@ npm install && npm start
 - [Accessible Astro Components](https://github.com/markteekman/accessible-astro-components) package comes preinstalled with extra components such as Accordions, Modals and Notifications
 - Nate Moore's awesome [Astro Icon](https://github.com/natemoo-re/astro-icon) package is also preinstalled which can be applied to different use cases
 
-**Provided by the Accessible Astro Components package*
-
 ## Login & Authentication
 
 This starter contains a basic example of authentication and redirecting based on a users logged in status. However, this is done using SSG, which is not ideal, but serves the purpose of this demo. For better authentication and redirecting you should use [Astro's (experimental) SSR](https://docs.astro.build/en/guides/server-side-rendering/).
@@ -49,7 +45,7 @@ For the purpose of the demo I have not enabled SSR, simply due to the fact how I
 
 This theme contains an example login flow, using a fake email address and password and by utilizing the `localStorage`. All pages redirect to `/login.astro` if you haven't logged in. After logging in the value `isLoggedIn` is set to `true` and your authenticated to view the admin pages. When building this using SSR you should use `cookies` instead of the `localStorage`.
 
-⚠️ **Note: this is just an example, make sure you build your own secure authentication. Checkout this [official Astro Blog post](https://astro.build/blog/experimental-server-side-rendering/) for more information about authentication and login.**
+⚠️ **Note: this is just an example, customize your own secure authentication. Checkout this [official Astro Blog post](https://astro.build/blog/experimental-server-side-rendering/) for more information about authentication and login.**
 
 ```js
 <script>
