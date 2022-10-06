@@ -37,7 +37,7 @@ import { Icon } from 'astro-icon'
     <a href="/">
       <img src={(await import('../assets/img/logo.svg')).default} alt="Your Logo">
     </a>
-    <ResponsiveToggle client:load />
+    <ResponsiveToggle />
     <nav>
       <ul>
         <slot />
