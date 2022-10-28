@@ -17,7 +17,4 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           prerelease: true
-          title: "Development Build"
-          files: |
-            LICENSE.txt
-            *.jar
+          title: "Pre release"
